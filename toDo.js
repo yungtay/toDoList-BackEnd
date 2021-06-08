@@ -5,10 +5,10 @@ let listToDo = []
 let options = ['add', 'list', 'check', 'remove', 'pomodoro' ]
 
 function toDo() {
-    if(fs.existsSync("./toDo.txt")) {
-        listToDo = JSON.parse(fs.readFileSync("./toDo.txt"))
-    }
-    const optionIndex = readlineSync.keyInSelect(options, "Type your commands");
+  if (fs.existsSync("./toDo.txt")) {
+    listToDo = JSON.parse(fs.readFileSync("./toDo.txt"));
+  }
+  const optionIndex = readlineSync.keyInSelect(options, "Type your commands");
 
   if (options[optionIndex] === "add") {
     add();
@@ -25,7 +25,7 @@ function toDo() {
   function add() {
     const addToDo = readlineSync.question("What do you want to do? ");
     listToDo.push({ done: false, text: addToDo, symbol: "🔴", pomodoro: 0 });
-    fs.writeFileSync( "./toDo.txt", JSON.stringify(listToDo))
+    fs.writeFileSync("./toDo.txt", JSON.stringify(listToDo));
     toDo();
   }
 
@@ -36,7 +36,7 @@ function toDo() {
     }
     console.log("===========================================\n");
     listToDo.map((i) => {
-      console.log(`${i.symbol} ${i.text} ${"🍅".repeat(i.pomodoro)}` );
+      console.log(`${i.symbol} ${i.text} ${"🍅".repeat(i.pomodoro)}`);
       console.log("");
     });
     console.log("===========================================");
@@ -60,6 +60,7 @@ function toDo() {
         listToDo[checkIndex].done = !listToDo[checkIndex].done;
         listToDo[checkIndex].symbol = "🟢";
       }
+      fs.writeFileSync("./toDo.txt", JSON.stringify(listToDo));
       check();
     } else {
       toDo();
@@ -77,7 +78,7 @@ function toDo() {
     );
     if (removeIndex > -1) {
       listToDo.splice(removeIndex, 1);
-      fs.writeFileSync( "./toDo.txt", JSON.stringify(listToDo))
+      fs.writeFileSync("./toDo.txt", JSON.stringify(listToDo));
       remove();
     } else {
       toDo();
@@ -94,14 +95,16 @@ function pomodoro() {
     listToDo.map((t) => `${t.symbol} ${t.text} ${"🍅".repeat(t.pomodoro)}`),
     "Type your commands"
   );
-  setInterval(() => {
-      console.log(pomodoroIndex)
-    console.log(listToDo[pomodoroIndex].pomodoro);
-    listToDo[pomodoroIndex].pomodoro += 1;
-    toDo()
-  }, 1000);
-  console.log(`Pomodoro de "${listToDo[pomodoroIndex].text}" setado!`);
-
+  if (pomodoroIndex > -1) {
+    console.log(`Pomodoro de "${listToDo[pomodoroIndex].text}" setado!`);
+    setTimeout(() => {
+      listToDo[pomodoroIndex].pomodoro += 1;
+      fs.writeFileSync("./toDo.txt", JSON.stringify(listToDo));
+      toDo();
+    }, 1500000);
+  } else {
+    toDo();
+  }
 }
 
 toDo()
