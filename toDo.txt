@@ -1,0 +1,1 @@
+[{"done":false,"text":"oi","symbol":"🔴"},{"done":false,"text":"tchau","symbol":"🔴"},{"done":false,"text":"teste","symbol":"🔴","pomodoro":2},{"done":false,"text":"oi","symbol":"🔴","pomodoro":0},{"done":false,"text":"teste3","symbol":"🔴","pomodoro":0}]
